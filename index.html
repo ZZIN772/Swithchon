@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스위치온 다이어트 체크리스트</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f3ee;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.1);
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6b65;
+      --text-hint: #a5a59f;
+      --green: #1D9E75;
+      --green-light: #E1F5EE;
+      --green-mid: #9FE1CB;
+      --green-dark: #085041;
+      --blue: #185FA5;
+      --blue-light: #E6F1FB;
+      --blue-mid: #B5D4F4;
+      --purple: #534AB7;
+      --purple-light: #EEEDFE;
+      --purple-mid: #CECBF6;
+      --amber: #BA7517;
+      --amber-light: #FAEEDA;
+      --amber-mid: #FAC775;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      background: var(--text-primary);
+      color: white;
+      padding: 2rem 1.5rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    header h1 span {
+      color: var(--green-mid);
+    }
+
+    .header-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 5px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green-mid);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      white-space: nowrap;
+      min-width: 50px;
+      text-align: right;
+    }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: 0.5px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      margin-left: auto;
+      display: block;
+    }
+    .reset-btn:hover { background: rgba(0,0,0,0.05); color: var(--text-primary); }
+
+    .week-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 0.5px solid var(--border);
+    }
+
+    .week-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .week-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .week-num {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .week-badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .week-progress-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .w1 .week-header { background: var(--green-light); }
+    .w1 .week-num { color: var(--green-dark); }
+    .w1 .week-badge { background: var(--green-mid); color: var(--green-dark); }
+    .w1 .week-progress-text { color: var(--green); }
+
+    .w2 .week-header { background: var(--blue-light); }
+    .w2 .week-num { color: var(--blue); }
+    .w2 .week-badge { background: var(--blue-mid); color: var(--blue); }
+    .w2 .week-progress-text { color: var(--blue); }
+
+    .w3 .week-header { background: var(--purple-light); }
+    .w3 .week-num { color: var(--purple); }
+    .w3 .week-badge { background: var(--purple-mid); color: var(--purple); }
+    .w3 .week-progress-text { color: var(--purple); }
+
+    .w4 .week-header { background: var(--amber-light); }
+    .w4 .week-num { color: var(--amber); }
+    .w4 .week-badge { background: var(--amber-mid); color: var(--amber); }
+    .w4 .week-progress-text { color: var(--amber); }
+
+    .week-body {
+      padding: 0 18px 14px;
+    }
+
+    .day-section {
+      margin-top: 14px;
+    }
+
+    .day-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-hint);
+      margin-bottom: 8px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 0.5px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.15s;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-item:hover { opacity: 0.8; }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid #d0cfc9;
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    .checkbox.checked {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .checkbox.checked::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 9px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .item-text {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      transition: color 0.15s;
+      flex: 1;
+    }
+
+    .item-text.done {
+      color: var(--text-hint);
+      text-decoration: line-through;
+    }
+
+    .shake-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--green-light);
+      color: var(--green);
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .chevron {
+      width: 16px;
+      height: 16px;
+      opacity: 0.4;
+      transition: transform 0.2s;
+    }
+
+    .week-card.collapsed .week-body { display: none; }
+    .week-card.collapsed .chevron { transform: rotate(-90deg); }
+
+    .tip-box {
+      background: #fff9ed;
+      border: 0.5px solid var(--amber-mid);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #7a5200;
+      line-height: 1.6;
+    }
+    .tip-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>스위치온 <span>다이어트</span> 체크리스트</h1>
+  <div class="header-progress">
+    <div class="progress-track">
+      <div class="progress-fill" id="total-bar"></div>
+    </div>
+    <div class="progress-label" id="total-label">0 / 0</div>
+  </div>
+</header>
+
+<main>
+  <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
+  <div id="weeks-container"></div>
+  <div class="tip-box">
+    <strong>💡 주의사항</strong>
+    물은 하루 8컵 이상 필수. 매 저녁 식사는 취침 2~4시간 전에 마치고, 전날 저녁부터 14시간 공복을 유지하세요. 단식 후에는 반드시 고단백 식사로 근손실을 방지하세요.
+  </div>
+</main>
+
+<script>
+const WEEKS = [
+  {
+    label: '1주차', cls: 'w1', badge: '장내 환경 개선',
+    days: [
+      { label: '1~3일차 — 쉐이크 하루 4회', items: [
+        { text: '아침 단백질 쉐이크', shake: true },
+        { text: '점심 단백질 쉐이크', shake: true },
+        { text: '간식 단백질 쉐이크', shake: true },
+        { text: '저녁 단백질 쉐이크', shake: true },
+        { text: '탄수화물 철저 제한 (하루 20~50g)' },
+        { text: '물 하루 8컵 이상 마시기' },
+        { text: '아침 공복 유산균 섭취' },
+        { text: '14시간 공복 유지' },
+        { text: '하루 60분 이상 걷기' },
+      ]},
+      { label: '4~7일차 — 쉐이크 하루 3회', items: [
+        { text: '아침 단백질 쉐이크', shake: true },
+        { text: '간식 단백질 쉐이크', shake: true },
+        { text: '저녁 단백질 쉐이크', shake: true },
+        { text: '점심: 현미잡곡밥 반공기 + 두부/생선/닭가슴살 등' },
+        { text: '아침·저녁 유산균, 비타민, 오메가3, CoQ10 섭취' },
+        { text: '물 하루 8컵 이상 마시기' },
+        { text: '14시간 공복 유지' },
+        { text: '하루 60분 이상 걷기' },
+      ]},
+    ]
+  },
+  {
+    label: '2주차', cls: 'w2', badge: '근육 회복',
+    days: [
+      { label: '8~14일차 — 쉐이크 하루 2회', items: [
+        { text: '아침 단백질 쉐이크', shake: true },
+        { text: '간식 단백질 쉐이크', shake: true },
+        { text: '점심: 저탄수화물 식사 (현미잡곡밥 반공기 + 단백질)' },
+        { text: '저녁: 무탄수화물 고단백 식사 (수육·생선·샤브샤브 등)' },
+        { text: '추가 허용: 견과류 한 줌, 콩류, 블랙커피 1잔, 우유 2잔' },
+        { text: '주 1회 24시간 간헐적 단식' },
+        { text: '아침·저녁 영양제 섭취' },
+        { text: '물 하루 8컵 이상' },
+        { text: '14시간 공복 유지' },
+      ]},
+    ]
+  },
+  {
+    label: '3주차', cls: 'w3', badge: '지방 연소 강화',
+    days: [
+      { label: '15~21일차 — 쉐이크 하루 2회', items: [
+        { text: '아침 단백질 쉐이크', shake: true },
+        { text: '간식 단백질 쉐이크', shake: true },
+        { text: '점심: 저탄수화물 식사 (2주차와 동일)' },
+        { text: '저녁: 무탄수화물 고단백 식사' },
+        { text: '추가 허용: 단호박·토마토·베리류 등 (양 조절 필수)' },
+        { text: '주 2회 24시간 간헐적 단식 (이틀 연속 금지)' },
+        { text: '단식 후 고단백 식사로 근손실 방지' },
+        { text: '고강도 인터벌 운동 15~30분 (숨 찰 정도)' },
+        { text: '아침·저녁 영양제 섭취' },
+      ]},
+    ]
+  },
+  {
+    label: '4주차', cls: 'w4', badge: '체질 전환',
+    days: [
+      { label: '22~28일차 — 쉐이크 하루 2회', items: [
+        { text: '아침 단백질 쉐이크', shake: true },
+        { text: '간식 단백질 쉐이크', shake: true },
+        { text: '점심: 저탄수화물 식사' },
+        { text: '저녁: 무탄수화물 고단백 식사' },
+        { text: '추가 허용: 과일 하루 1개' },
+        { text: '주 2회 24시간 간헐적 단식 유지' },
+        { text: '3주차 근육량 회복 확인 후 진행 (미회복 시 3주차 반복)' },
+        { text: '아침·저녁 영양제 섭취' },
+        { text: '고강도 인터벌 운동 지속' },
+      ]},
+    ]
+  }
+];
+
+const STATE_KEY = 'switch_on_diet_v1';
+let state = {};
+
+function loadState() {
+  try { state = JSON.parse(localStorage.getItem(STATE_KEY) || '{}'); } catch { state = {}; }
+}
+
+function saveState() {
+  localStorage.setItem(STATE_KEY, JSON.stringify(state));
+}
+
+function getId(wi, di, ii) { return `${wi}-${di}-${ii}`; }
+
+function buildUI() {
+  const container = document.getElementById('weeks-container');
+  WEEKS.forEach((week, wi) => {
+    const card = document.createElement('div');
+    card.className = `week-card ${week.cls}`;
+    card.id = `week-${wi}`;
+
+    const header = document.createElement('div');
+    header.className = 'week-header';
+    header.innerHTML = `
+      <div class="week-header-left">
+        <span class="week-num">${week.label}</span>
+        <span class="week-badge">${week.badge}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="week-progress-text" id="wprog-${wi}"></span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+    `;
+    header.addEventListener('click', () => {
+      card.classList.toggle('collapsed');
+    });
+    card.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'week-body';
+
+    week.days.forEach((day, di) => {
+      const sec = document.createElement('div');
+      sec.className = 'day-section';
+      const lbl = document.createElement('div');
+      lbl.className = 'day-label';
+      lbl.textContent = day.label;
+      sec.appendChild(lbl);
+
+      day.items.forEach((item, ii) => {
+        const id = getId(wi, di, ii);
+        if (state[id] === undefined) state[id] = false;
+
+        const row = document.createElement('div');
+        row.className = 'check-item';
+        row.innerHTML = `
+          <div class="checkbox${state[id] ? ' checked' : ''}" id="cb-${id}"></div>
+          <div class="item-text${state[id] ? ' done' : ''}" id="txt-${id}">${item.text}${item.shake ? '<span class="shake-tag">쉐이크</span>' : ''}</div>
+        `;
+        row.addEventListener('click', () => toggle(id, wi));
+        sec.appendChild(row);
+      });
+      body.appendChild(sec);
+    });
+
+    card.appendChild(body);
+    container.appendChild(card);
+    updateWeekProgress(wi);
+  });
+  updateTotal();
+}
+
+function toggle(id, wi) {
+  state[id] = !state[id];
+  document.getElementById('cb-' + id).className = 'checkbox' + (state[id] ? ' checked' : '');
+  document.getElementById('txt-' + id).className = 'item-text' + (state[id] ? ' done' : '');
+  saveState();
+  updateWeekProgress(wi);
+  updateTotal();
+}
+
+function updateWeekProgress(wi) {
+  const week = WEEKS[wi];
+  let total = 0, done = 0;
+  week.days.forEach((day, di) => {
+    day.items.forEach((_, ii) => {
+      total++;
+      if (state[getId(wi, di, ii)]) done++;
+    });
+  });
+  document.getElementById('wprog-' + wi).textContent = `${done}/${total}`;
+}
+
+function updateTotal() {
+  const total = Object.keys(state).length;
+  const done = Object.values(state).filter(Boolean).length;
+  document.getElementById('total-label').textContent = `${done} / ${total}`;
+  document.getElementById('total-bar').style.width = total ? (done / total * 100).toFixed(0) + '%' : '0%';
+}
+
+function resetAll() {
+  if (!confirm('모든 체크 항목을 초기화할까요?')) return;
+  Object.keys(state).forEach(k => state[k] = false);
+  document.querySelectorAll('.checkbox').forEach(el => el.classList.remove('checked'));
+  document.querySelectorAll('.item-text').forEach(el => el.classList.remove('done'));
+  saveState();
+  WEEKS.forEach((_, wi) => updateWeekProgress(wi));
+  updateTotal();
+}
+
+loadState();
+buildUI();
+</script>
+</body>
+</html>
